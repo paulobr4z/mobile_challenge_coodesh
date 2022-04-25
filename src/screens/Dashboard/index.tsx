@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { BottomSheetInfo } from '../../components/BottomSheet';
 import { PatientList } from '../../components/PatientList';
-import { PatientsContext } from '../../contexts/PatientsContext';
+import api from '../../services/api';
+import { IPatients } from '../../types/patients';
 
 import {
   Title,
@@ -15,9 +16,25 @@ import {
 } from './styles';
 
 export function Dashboard() {
-  const { patients, loading } = useContext(PatientsContext);
+  const [patients, setPatients] = useState<IPatients[]>([]);
+  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [patientIndex, setPatientIndex] = useState(0);
+  const [gender, setGender] = useState('female');
+
+  useEffect(() => {
+    setLoading(true);
+
+    async function onGetPatients() {
+      const response = await api.get('?page=0&results=20&seed=patients');
+
+      setPatients(response.data.results);
+      setLoading(false);
+    }
+
+    onGetPatients();      
+
+  }, [])
 
   function handleOpenBottomSheet(index: number) {
     setIsOpen(true);
@@ -28,6 +45,13 @@ export function Dashboard() {
     setIsOpen(false)
   }
 
+  function getPatientByGender() {
+    const patientByGender = patients.filter(patient => patient.gender === gender);
+    
+    setPatients(patientByGender)
+    setGender(gender === 'male' ? 'female' : 'male')
+  }
+
   return (
     <Container>
       <Header>
@@ -35,7 +59,7 @@ export function Dashboard() {
       </Header>
       <SearchFilterContainer>
         <Search placeholder='teste' />
-        <FilterButton>
+        <FilterButton onPress={getPatientByGender}>
           <FilterIcon name="filter" />
         </FilterButton>
       </SearchFilterContainer>

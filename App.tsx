@@ -26,11 +26,9 @@ export default function App() {
   }
 
   return (
-    <PatientsProvider>
       <ThemeProvider theme={theme}>
         <StatusBar style='dark' />
         <Dashboard />
       </ThemeProvider>
-    </PatientsProvider>
   );
 }

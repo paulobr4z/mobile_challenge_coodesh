@@ -4,7 +4,6 @@ export const ItemPatientList = styled.TouchableOpacity`
   flex: 1;
   flex-direction: row;
   border: 1px solid #ccc;
-  margin-bottom: 8px;
   border-radius: 8px;
   padding: 8px;
 `;
@@ -16,7 +15,11 @@ export const Avatar = styled.Image`
   margin-right: 16px;
 `;
 
-
 export const PatientInfo = styled.View`
   flex: 1;
+`;
+
+export const Separator = styled.View`
+  height: 8px;
+  width: 100%;
 `;

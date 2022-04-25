@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { IPatients } from '../../types/patients';
 import { formatDate } from '../../utils/formatDate';
 import {
   Avatar,
   ItemPatientList,
-  PatientInfo
+  PatientInfo,
+  Separator
 } from './styles';
 
 interface IPatientList {
@@ -18,21 +19,24 @@ export function PatientList({
   openBottomSheet,
 }: IPatientList) {
   return (
-    <FlatList
+    <FlatList style={{  flex: 1, borderColor: 'black', borderWidth: 1 }}
       data={patients}
+      ItemSeparatorComponent={Separator}
       keyExtractor={ item => item.login.uuid }
-      renderItem={({ item, index }) => (
-        <ItemPatientList
-          onPress={() => openBottomSheet(index)}
-        >
-          <Avatar source={{ uri: item.picture.large }} />
-          <PatientInfo>
-            <Text>{`${item.name.first} ${item.name.last}`}</Text>
-            <Text>{item.gender}</Text>
-            <Text>{formatDate(item.dob.date)}</Text>
-          </PatientInfo>
-        </ItemPatientList>
-      )}
+      renderItem={({ item, index }) => {
+        return (
+          <ItemPatientList
+            onPress={() => openBottomSheet(index)}
+          >
+            <Avatar source={{ uri: item.picture.large }} />
+            <PatientInfo>
+              <Text>{`${item.name.first} ${item.name.last}`}</Text>
+              <Text>{item.gender}</Text>
+              <Text>{formatDate(item.dob.date)}</Text>
+            </PatientInfo>
+          </ItemPatientList>
+        )
+      }}
     />
   );
 }
