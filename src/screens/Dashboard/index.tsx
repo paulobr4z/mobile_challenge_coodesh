@@ -22,7 +22,6 @@ export function Dashboard() {
   function handleOpenBottomSheet(index: number) {
     setIsOpen(true);
     setPatientIndex(index);
-    console.log(patients[patientIndex])
   }
   
   function handleCloseBottomSheet() {

@@ -17,16 +17,28 @@ export const CloseIcon = styled(FontAwesome)`
   font-size: 24px;
 `;
 
-export const PatientImageContainer = styled.View`
-  position: absolute;
-  top: -10px;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
+export const PatientImage = styled.Image`
+  height: 90px;
+  width: 90px;
+  border-radius: 90px;
+  margin-top: 16px;
 `;
 
-export const PatientImage = styled.Image`
-  height: 60px;
-  width: 60px;
-  border-radius: 60px;
+export const PatientInfoContainer = styled.View`
+  width: 100%;
+  align-items: flex-start;
+  margin-top: 8px;
+  padding: 16px;
+`;
+
+export const PatientInfoTitle = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 14px;
+`;
+
+export const PatientInfoText = styled.Text`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 16px;
+  margin-bottom: 16px;
 `;
