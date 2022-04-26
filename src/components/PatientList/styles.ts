@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 
 export const ItemPatientList = styled.TouchableOpacity`
-  flex: 1;
   flex-direction: row;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -16,7 +15,6 @@ export const Avatar = styled.Image`
 `;
 
 export const PatientInfo = styled.View`
-  flex: 1;
 `;
 
 export const Separator = styled.View`

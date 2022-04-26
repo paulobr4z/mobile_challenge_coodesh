@@ -4,7 +4,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 export const Container = styled.SafeAreaView`
   flex: 1;
   padding: 0 16px;
-  background-color: ${({ theme }) => theme.colors.background};  
+  background-color: ${({ theme }) => theme.colors.background};
+  padding-bottom: 16px;
 `;
 
 export const Header = styled.View`

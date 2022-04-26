@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { BottomSheetInfo } from '../../components/BottomSheet';
+import { Loading } from '../../components/Loading';
 import { PatientList } from '../../components/PatientList';
 import api from '../../services/api';
 import { IPatients } from '../../types/patients';
@@ -20,21 +21,34 @@ export function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [patientIndex, setPatientIndex] = useState(0);
-  const [gender, setGender] = useState('female');
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
+  async function onGetPatients() {
     setLoading(true);
 
-    async function onGetPatients() {
-      const response = await api.get('?page=0&results=20&seed=patients');
+    const { data } = await api.get(`?page=1&results=10&seed=abc`);
 
-      setPatients(response.data.results);
-      setLoading(false);
-    }
+    setPatients(data.results);
+    setLoading(false);
+    setPage(prev => prev + 1);
+  }
 
-    onGetPatients();      
-
+  useEffect(() => {
+    onGetPatients();
   }, [])
+
+  async function getNewPage() {
+    if (page > 5) return;
+
+    setLoading(true);
+
+    const { data } = await api.get(`?page=${page}&results=10&seed=abc`);
+
+    setPatients(prev => [...prev, ...data.results]);
+    setLoading(false);
+    setPage(prev => prev + 1);
+  }
+
 
   function handleOpenBottomSheet(index: number) {
     setIsOpen(true);
@@ -46,10 +60,9 @@ export function Dashboard() {
   }
 
   function getPatientByGender() {
-    const patientByGender = patients.filter(patient => patient.gender === gender);
-    
-    setPatients(patientByGender)
-    setGender(gender === 'male' ? 'female' : 'male')
+    const patientByGender = patients.filter(patient => patient.gender === 'female');
+
+    setPatients(patientByGender);
   }
 
   return (
@@ -63,16 +76,12 @@ export function Dashboard() {
           <FilterIcon name="filter" />
         </FilterButton>
       </SearchFilterContainer>
-      {
-        loading ? (
-          <Text>loading...</Text>
-        ) : (
-          <PatientList
-            patients={patients} 
-            openBottomSheet={handleOpenBottomSheet}
-          />
-        )
-      }
+      <PatientList
+        patients={patients} 
+        openBottomSheet={handleOpenBottomSheet}
+        isLoading={loading}
+        getMorePage={() => getNewPage()}
+      />
       <BottomSheetInfo
         closeBottomSheet={() => handleCloseBottomSheet()}
         isOpen={isOpen}
